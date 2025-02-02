@@ -1,0 +1,17 @@
+name: GitHub Actions Test
+
+on:
+  push:
+    branches:
+      - main  # Runs the action when code is pushed to main branch
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 22f2001048@ds.study.iitm.ac.in
+        run: echo "Hello, world!"
