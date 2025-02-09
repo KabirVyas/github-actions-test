@@ -1,17 +1,31 @@
-name: GitHub Actions Test
+name: Daily Commit Bot
 
 on:
-  push:
-    branches:
-      - main  # Runs the action when code is pushed to main branch
-  workflow_dispatch:  # Allows manual trigger
+  schedule:
+    - cron: "0 0 * * *"  # Runs every day at midnight UTC
 
 jobs:
-  test:
+  commit_job:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
-      - name: 22f2001048@ds.study.iitm.ac.in
-        run: echo "Hello, world!"
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure Git User
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "22f2001048@ds.study.iitm.ac.in"
+
+      - name: Make a Dummy Change
+        run: |
+          echo "Last update: $(date)" > last_updated.txt
+          git add last_updated.txt
+
+      - name: Commit Changes
+        run: |
+          git commit -m "Automated commit - $(date)" || echo "No changes to commit"
+
+      - name: Push Changes
+        run: |
+          git push origin main
